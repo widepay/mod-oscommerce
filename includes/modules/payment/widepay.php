@@ -133,7 +133,7 @@ class widepay
 
         // chamado pelo checkout_process.php depois que a transa��o foi finalizada
         global $order, $cartID, $cart, $insert_id, $cart_widepay_id, $sendto, $billto, $currencies, $HTTP_POST_VARS;
-        $insert_id = $insert_id;
+
 
 
         $total = $order->info['total'];
@@ -212,6 +212,14 @@ class widepay
             $transacao = $response->id;
             $linhaDigitavel = @$response->boleto['linha-digitavel'];
             $total = 'R$' . number_format($order->info['total'], '2', ',', '');
+
+            $cart->reset(true);
+
+            tep_session_unregister('sendto');
+            tep_session_unregister('billto');
+            tep_session_unregister('shipping');
+            tep_session_unregister('payment');
+            tep_session_unregister('comments');
 
             tep_redirect(tep_href_link('/checkout_widepay_success.php', 'link_boleto=' . $link_boleto . '&transacao=' . $transacao . '&linhaDigitavel=' . $linhaDigitavel . '&total=' . $total, 'NONSSL', true, false));
 
